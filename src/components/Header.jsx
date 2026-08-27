@@ -21,14 +21,17 @@ const Header = async () => {
           loading="eager"
         />
 
-        <span>Task-Flow</span>
+        <span className="hidden md:flex md:text-xs">Task-Flow</span>
       </Link>
 
-      <form action={logout} className="flex gap-4 items-center justify-center">
+      <form
+        action={logout}
+        className="flex flex-col md:flex-row items-end md:items-center md:justify-center gap-1 md:gap-4 "
+      >
         <p className="text-xs">You are logged in as {session?.user?.email}</p>
         <button
           type="submit"
-          className="bg-black text-white py-1 px-4 flex items-center gap-1 cursor-pointer text-xs"
+          className="bg-black text-white py-1 px-4 flex justify-end gap-1 cursor-pointer text-xs w-25"
         >
           Log out <CiLogout color="#fff" size={20} />
         </button>
