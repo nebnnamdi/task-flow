@@ -1,22 +1,35 @@
 import { auth } from "@/auth";
-import { logout } from "@/actions";
+import DashboardCard from "@/components/ui/DashboardCard";
+
+const items = [
+  {
+    name: "Projects",
+    href: "/projects",
+    icon: "FaProjectDiagram",
+    others: true,
+  },
+  { name: "Tasks", href: "/tasks", icon: "BiTask", others: true },
+  { name: "Settings", href: "/settings", icon: "IoMdSettings" },
+];
 
 const Dashboard = async () => {
   const session = await auth();
 
-  console.log(session);
   return (
-    <div>
-      <p>Welcome back, {session.user?.name}</p>
+    <div className="flex flex-col justify-center items-center md:items-start">
+      <p className="text-2xl font-bold">Welcome back, {session.user?.name}!</p>
 
-      <form action={logout}>
-        <button
-          type="submit"
-          className="bg-black text-white cursor-pointer p-2"
-        >
-          Logout
-        </button>
-      </form>
+      <section className="flex flex-col md:flex-row gap-8 w-full p-4">
+        {items.map((item) => (
+          <DashboardCard
+            name={item.name}
+            icon={item.icon}
+            href={item.href}
+            key={item.name}
+            others={item.others}
+          />
+        ))}
+      </section>
     </div>
   );
 };

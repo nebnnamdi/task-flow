@@ -21,15 +21,21 @@ export function proxy(request) {
   const { pathname } = request.nextUrl;
 
   //private route
-  const isAuthRoute = pathname.startsWith("/dashboard");
+  const isPrivateRoute =
+    pathname.startsWith("/dashboard") ||
+    pathname.startsWith("/settings") ||
+    pathname.startsWith("/projects") ||
+    pathname.startsWith("/tasks");
 
   //public route
   const isPublicRoute =
     pathname.startsWith("/login") || pathname.startsWith("/signup");
+
+  //home route
   const isHomeRoute = pathname === "/";
 
   //check if not logged in and trying to access dashboard routes
-  if (isAuthRoute && !token) {
+  if (isPrivateRoute && !token) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
