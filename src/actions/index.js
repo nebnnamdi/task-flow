@@ -1,6 +1,8 @@
 "use server";
 
-import { signIn, signOut } from "@/auth";
+import { signIn, signOut, auth } from "@/auth";
+import { User, Project } from "@/model/user-model";
+import { revalidatePath } from "next/cache";
 
 export async function login(formData) {
   const user = {
@@ -45,4 +47,40 @@ export async function login(formData) {
 
 export async function logout() {
   await signOut({ redirectTo: "/" });
+}
+
+export async function getSession() {
+  return auth();
+}
+
+export async function getAllUsers() {
+  const users = await User.find({}).select("-password").lean();
+
+  return users.map((user) => ({
+    ...user,
+    _id: user._id.toString(),
+  }));
+}
+
+export async function getAllProjects() {
+  try {
+    const projects = await Project.find({}).sort({ _id: -1 }).lean();
+    return projects.map((project) => ({
+      ...project,
+      _id: project._id.toString(),
+    }));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function deleteProject(id) {
+  try {
+    await Project.deleteOne({ _id: id });
+
+    revalidatePath("/dashboard/projects");
+    return { success: true };
+  } catch (error) {
+    return { error };
+  }
 }

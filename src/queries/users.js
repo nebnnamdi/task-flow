@@ -1,4 +1,4 @@
-import { User } from "@/model/user-model";
+import { User, Project } from "@/model/user-model";
 import { NextResponse } from "next/server";
 
 export const createUser = async (user) => {
@@ -12,5 +12,16 @@ export const createUser = async (user) => {
         statusText: "User already exists!",
       });
     }
+  }
+};
+
+export const createProject = async (project) => {
+  try {
+    await Project.create(project);
+  } catch (error) {
+    return new NextResponse("Error creating project", {
+      status: 401,
+      statusText: "Error creating project",
+    });
   }
 };
