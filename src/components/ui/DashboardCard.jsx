@@ -3,7 +3,7 @@ import { FaProjectDiagram } from "react-icons/fa";
 import { BiTask } from "react-icons/bi";
 import { IoMdSettings } from "react-icons/io";
 
-const DashboardCard = ({ name, icon, href, others }) => {
+const DashboardCard = ({ name, icon, href }) => {
   return (
     <Link
       href={href}

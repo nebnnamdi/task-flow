@@ -4,12 +4,12 @@ import DashboardCard from "@/components/ui/DashboardCard";
 const items = [
   {
     name: "Projects",
-    href: "/projects",
+    href: "/dashboard/projects",
     icon: "FaProjectDiagram",
     others: true,
   },
-  { name: "Tasks", href: "/tasks", icon: "BiTask", others: true },
-  { name: "Settings", href: "/settings", icon: "IoMdSettings" },
+  { name: "Tasks", href: "/dashboard/tasks", icon: "BiTask", others: true },
+  { name: "Settings", href: "/dashboard/settings", icon: "IoMdSettings" },
 ];
 
 const Dashboard = async () => {

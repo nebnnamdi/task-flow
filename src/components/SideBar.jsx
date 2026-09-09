@@ -5,16 +5,16 @@ import { usePathname } from "next/navigation";
 
 const items = [
   { name: "Dashboard", icon: "MdOutlineDashboard", href: "/dashboard" },
-  { name: "Projects", icon: "FaProjectDiagram", href: "/projects" },
-  { name: "Tasks", icon: "BiTask", href: "/tasks" },
-  { name: "Settings", icon: "IoMdSettings", href: "/settings" },
+  { name: "Projects", icon: "FaProjectDiagram", href: "/dashboard/projects" },
+  { name: "Tasks", icon: "BiTask", href: "/dashboard/tasks" },
+  { name: "Settings", icon: "IoMdSettings", href: "/dashboard/settings" },
 ];
 
 const SideBar = () => {
   const pathName = usePathname();
 
   return (
-    <aside className="fixed left-0 hidden md:flex md:flex-col md:w-1/5 h-[calc(100vh-4rem)] bg-white shadow  overflow-y-auto ">
+    <aside className="fixed left-0 hidden md:flex md:flex-col md:w-1/5 h-screen bg-white shadow  overflow-y-auto ">
       <nav className="flex flex-col space-y-2">
         {items.map((item) => {
           const isActive = pathName === item.href;
