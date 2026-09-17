@@ -49,7 +49,44 @@ const projectSchema = new Schema({
   },
 });
 
+const taskSchema = new Schema({
+  title: {
+    required: true,
+    type: String,
+  },
+  description: {
+    required: true,
+    type: String,
+  },
+  startDate: {
+    required: true,
+    type: String,
+  },
+  dueDate: {
+    required: true,
+    type: String,
+  },
+  priority: {
+    required: true,
+    type: String,
+  },
+  status: {
+    required: true,
+    type: String,
+  },
+  assignee: {
+    required: true,
+    type: String,
+  },
+  projectName: {
+    required: true,
+    type: String,
+  },
+});
+
 export const User = mongoose.models.User ?? mongoose.model("User", userSchema);
 
 export const Project =
   mongoose.models.Project ?? mongoose.model("Project", projectSchema);
+
+export const Task = mongoose.models.Task ?? mongoose.model("Task", taskSchema);
