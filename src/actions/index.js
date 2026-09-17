@@ -1,7 +1,8 @@
 "use server";
 
 import { signIn, signOut, auth } from "@/auth";
-import { User, Project } from "@/model/user-model";
+import mongoose from "mongoose";
+import { User, Project, Task } from "@/model/user-model";
 import { revalidatePath } from "next/cache";
 
 export async function login(formData) {
@@ -70,7 +71,7 @@ export async function getAllProjects() {
       _id: project._id.toString(),
     }));
   } catch (error) {
-    console.log(error);
+    console.log({ error });
   }
 }
 
@@ -80,6 +81,38 @@ export async function deleteProject(id) {
 
     revalidatePath("/dashboard/projects");
     return { success: true };
+  } catch (error) {
+    return { error };
+  }
+}
+
+export async function getAllTasks() {
+  try {
+    const tasks = await Task.find({}).sort({ _id: -1 }).lean();
+
+    return tasks.map((task) => ({ ...task, _id: task._id.toString() }));
+  } catch (error) {
+    console.log({ error });
+  }
+}
+
+export async function updateTaskStatus(id, newStatus) {
+  try {
+    const response = await Task.findOneAndUpdate(
+      { _id: new mongoose.Types.ObjectId(id) },
+      { status: newStatus },
+      { returnDocument: "after", runValidators: true },
+    ).lean();
+
+    if (!response) {
+      return { success: false, error: "Error updating task status" };
+    }
+
+    revalidatePath("/dashboard/tasks");
+    return {
+      success: true,
+      data: { ...response, _id: response._id.toString() },
+    };
   } catch (error) {
     return { error };
   }
