@@ -32,8 +32,8 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="flex items-center justify-center">
-      <div>
+    <div className="flex items-center justify-center flex-col md:flex-row">
+      <div className="hidden md:block">
         <Image
           src="/images/login_img.png"
           width="382"

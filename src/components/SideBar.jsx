@@ -3,7 +3,7 @@
 import SidebarLink from "@/components/ui/SidebarLink";
 import { usePathname } from "next/navigation";
 
-const items = [
+export const items = [
   { name: "Dashboard", icon: "MdOutlineDashboard", href: "/dashboard" },
   { name: "Projects", icon: "FaProjectDiagram", href: "/dashboard/projects" },
   { name: "Tasks", icon: "BiTask", href: "/dashboard/tasks" },

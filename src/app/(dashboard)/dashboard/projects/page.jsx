@@ -35,7 +35,7 @@ const ProjectPage = () => {
   }, [sessionEmail]);
 
   const page = isLoading ? (
-    <div className="flex flex-col">
+    <div className="flex flex-col pb-24">
       <p className="text-2xl font-bold mb-4">Projects</p>
 
       <section className="flex flex-col w-full bg-white p-4 gap-4 min-h-50">

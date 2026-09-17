@@ -8,49 +8,6 @@ import TaskStatusBar from "./TaskStatus";
 import { getAllTasks, getSession } from "@/actions";
 import Spinner from "@/components/ui/Spinner";
 
-// const tasks = [
-//   {
-//     id: "1",
-//     taskTitle: "Task 1",
-//     priority: "High",
-//     projectTitle: "First project",
-//     description:
-//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit assumenda earum maxime ut ipsam ad totam, sunt aspernatur modi laudantium placeat libero culpa amet provident. Possimus tenetur quos nam beatae?",
-//     status: "In Progress",
-//     dueDate: "2023-08-01",
-//   },
-//   {
-//     id: "2",
-//     taskTitle: "Task 2",
-//     priority: "Low",
-//     projectTitle: "Second project",
-//     description:
-//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit assumenda earum maxime ut ipsam ad totam, sunt aspernatur modi laudantium placeat libero culpa amet provident. Possimus tenetur quos nam beatae?",
-//     status: "Pending",
-//     dueDate: "2023-08-01",
-//   },
-//   {
-//     id: "3",
-//     taskTitle: "Task 3",
-//     priority: "Medium",
-//     projectTitle: "Third project",
-//     description:
-//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit assumenda earum maxime ut ipsam ad totam, sunt aspernatur modi laudantium placeat libero culpa amet provident. Possimus tenetur quos nam beatae?",
-//     status: "Completed",
-//     dueDate: "2023-08-01",
-//   },
-//   {
-//     id: "4",
-//     taskTitle: "Task 4",
-//     priority: "Low",
-//     projectTitle: "Fourth project",
-//     description:
-//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit assumenda earum maxime ut ipsam ad totam, sunt aspernatur modi laudantium placeat libero culpa amet provident. Possimus tenetur quos nam beatae?",
-//     status: "Pending",
-//     dueDate: "2023-08-01",
-//   },
-// ];
-
 const TasksPage = () => {
   const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -85,7 +42,7 @@ const TasksPage = () => {
   const page = isLoading ? (
     <Spinner />
   ) : (
-    <div className="flex flex-col">
+    <div className="flex flex-col pb-24">
       {/* Back to dashboard button */}
       <Link
         href="/dashboard"

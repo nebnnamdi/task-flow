@@ -5,6 +5,7 @@ import { dbConnect } from "@/lib/mongo";
 import { GlobalProvider } from "@/components/GlobalContext";
 import SideBar from "@/components/SideBar";
 import Header from "@/components/Header";
+import MobileMenu from "@/components/MobileMenu";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,12 +35,15 @@ export default async function dashboardLayout({ children }) {
           {/* Header */}
           <Header />
 
+          {/* Mobile menu */}
+          <MobileMenu />
+
           {/* Layout wrapper */}
           <div className="flex pt-16 h-[calc(100vh)] box-border">
             <SideBar />
 
             <GlobalProvider>
-              <main className="md:ml-[20%] md:w-4/5 w-full h-[calc(100vh-4rem)] overflow-y-auto bg-blue-100 p-4">
+              <main className="md:ml-[20%] md:w-4/5 w-full h-full overflow-y-auto bg-blue-100 p-4 pb-24">
                 {children}
               </main>
             </GlobalProvider>

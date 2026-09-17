@@ -1,8 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
+import { getAllProjects, getSession } from "@/actions";
 import AllocationFields from "./AllocationFields";
+import Spinner from "@/components/ui/Spinner";
 
 const today = new Date().toISOString().split("T")[0];
 
@@ -17,6 +20,27 @@ const NewTask = () => {
     assignee: "",
     projectName: "",
   });
+
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    async function getProjects() {
+      setIsLoading(true);
+      const projects = await getAllProjects();
+
+      const session = await getSession();
+      const sessionUser = session.user.email;
+
+      const myProjects = projects.filter(
+        (project) => project.createdBy === sessionUser,
+      );
+
+      setProjects(myProjects);
+      setIsLoading(false);
+    }
+
+    getProjects();
+  }, []);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -90,156 +114,171 @@ const NewTask = () => {
   return (
     <div className="flex flex-col">
       <p className="text-lg text-gray-400 my-4">Tasks / Create Task</p>
-      <section className="flex flex-col w-full bg-white p-4 gap-4 shadow">
-        <form
-          onSubmit={submitHandler}
-          onReset={resetHandler}
-          className="text-sm flex flex-col gap-4"
-        >
-          {/* Task title */}
-          <div className="flex flex-col gap-2">
-            <label htmlFor="title" className="font-semibold">
-              Task Title <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              name="title"
-              id="title"
-              value={title}
-              onChange={onChangeHandler}
-              placeholder="Task Title"
-              className="bg-gray-50 rounded-xl px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-300"
-              required
-            />
-          </div>
-
-          {/* Description */}
-          <div className="flex flex-col gap-2">
-            <label htmlFor="description" className="font-semibold">
-              Description <span className="text-red-500">*</span>
-            </label>
-            <textarea
-              name="description"
-              id="description"
-              placeholder="Description"
-              rows="4"
-              value={description}
-              onChange={onChangeHandler}
-              className="bg-gray-50 rounded-xl px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-300"
-              required
-            ></textarea>
-          </div>
-
-          {/* Start and due dates */}
-          <div className="w-full flex gap-4">
-            <div className="w-1/2 flex flex-col">
-              <label htmlFor="startDate" className="font-semibold">
-                Start Date <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="date"
-                name="startDate"
-                id="startDate"
-                value={startDate}
-                min={today}
-                onChange={onChangeHandler}
-                className="bg-gray-50 px-4 py-2 rounded-xl focus:ring-2 focus:ring-blue-300 outline-none"
-                required
-              />
-            </div>
-
-            <div className="w-1/2 flex flex-col">
-              <label htmlFor="dueDate" className="font-semibold">
-                Due Date <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="date"
-                name="dueDate"
-                id="dueDate"
-                value={dueDate}
-                min={startDate}
-                onChange={onChangeHandler}
-                required
-                className="bg-gray-50 px-4 py-2 rounded-xl focus:ring-2 focus:ring-blue-300 outline-none"
-              />
-            </div>
-          </div>
-
-          {/* Priority and status */}
-          <div className="w-full flex gap-4">
-            <div className="flex flex-col w-1/2 gap-2">
-              <label htmlFor="priority" className="font-semibold">
-                Priority <span className="text-red-500">*</span>
-              </label>
-              <select
-                id="priority"
-                name="priority"
-                onChange={onChangeHandler}
-                value={priority}
-                required
-                className="bg-gray-50 px-4 py-2 rounded-xl focus:ring-2 focus:ring-blue-300 outline-none"
-              >
-                <option value="" disabled hidden>
-                  Please select
-                </option>
-
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-              </select>
-            </div>
-
-            <div className="flex flex-col w-1/2 gap-2">
-              <label htmlFor="status" className="font-semibold">
-                Status <span className="text-red-500">*</span>
-              </label>
-              <select
-                id="status"
-                name="status"
-                className="bg-gray-50 px-4 py-2 rounded-xl focus:ring-2 focus:ring-blue-300 outline-none"
-                onChange={onChangeHandler}
-                value={status}
-                required
-              >
-                <option value="" disabled hidden>
-                  Please select
-                </option>
-
-                <option value="Pending">Pending</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Completed">Completed</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Assignee and project name */}
-          <AllocationFields
-            assignee={assignee}
-            projectName={projectName}
-            onChangeHandler={onChangeHandler}
-          />
-
-          {/* Buttons */}
-          <div className="flex flex-col md:flex-row md:justify-end gap-4">
-            <button
-              type="submit"
-              className={`text-white rounded-lg py-2 px-4 active:shadow-md ${isLoading ? "bg-blue-300 cursor-not-allowed" : "hover:bg-blue-600 cursor-pointer bg-blue-500"}`}
-              disabled={isLoading}
+      {!isLoading && (
+        <section className="flex flex-col w-full bg-white p-4 gap-4 shadow">
+          {projects.length > 0 ? (
+            <form
+              onSubmit={submitHandler}
+              onReset={resetHandler}
+              className="text-sm flex flex-col gap-4"
             >
-              {isLoading ? "Creating task..." : "Create Task"}
-            </button>
+              {/* Task title */}
+              <div className="flex flex-col gap-2">
+                <label htmlFor="title" className="font-semibold">
+                  Task Title <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="title"
+                  id="title"
+                  value={title}
+                  onChange={onChangeHandler}
+                  placeholder="Task Title"
+                  className="bg-gray-50 rounded-xl px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-300"
+                  required
+                />
+              </div>
 
-            {!isLoading && (
-              <button
-                type="reset"
-                className="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600 cursor-pointer"
+              {/* Description */}
+              <div className="flex flex-col gap-2">
+                <label htmlFor="description" className="font-semibold">
+                  Description <span className="text-red-500">*</span>
+                </label>
+                <textarea
+                  name="description"
+                  id="description"
+                  placeholder="Description"
+                  rows="4"
+                  value={description}
+                  onChange={onChangeHandler}
+                  className="bg-gray-50 rounded-xl px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-300"
+                  required
+                ></textarea>
+              </div>
+
+              {/* Start and due dates */}
+              <div className="w-full flex gap-4">
+                <div className="w-1/2 flex flex-col">
+                  <label htmlFor="startDate" className="font-semibold">
+                    Start Date <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    name="startDate"
+                    id="startDate"
+                    value={startDate}
+                    min={today}
+                    onChange={onChangeHandler}
+                    className="bg-gray-50 px-4 py-2 rounded-xl focus:ring-2 focus:ring-blue-300 outline-none"
+                    required
+                  />
+                </div>
+
+                <div className="w-1/2 flex flex-col">
+                  <label htmlFor="dueDate" className="font-semibold">
+                    Due Date <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    name="dueDate"
+                    id="dueDate"
+                    value={dueDate}
+                    min={startDate}
+                    onChange={onChangeHandler}
+                    required
+                    className="bg-gray-50 px-4 py-2 rounded-xl focus:ring-2 focus:ring-blue-300 outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Priority and status */}
+              <div className="w-full flex gap-4">
+                <div className="flex flex-col w-1/2 gap-2">
+                  <label htmlFor="priority" className="font-semibold">
+                    Priority <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    id="priority"
+                    name="priority"
+                    onChange={onChangeHandler}
+                    value={priority}
+                    required
+                    className="bg-gray-50 px-4 py-2 rounded-xl focus:ring-2 focus:ring-blue-300 outline-none"
+                  >
+                    <option value="" disabled hidden>
+                      Please select
+                    </option>
+
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                  </select>
+                </div>
+
+                <div className="flex flex-col w-1/2 gap-2">
+                  <label htmlFor="status" className="font-semibold">
+                    Status <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    id="status"
+                    name="status"
+                    className="bg-gray-50 px-4 py-2 rounded-xl focus:ring-2 focus:ring-blue-300 outline-none"
+                    onChange={onChangeHandler}
+                    value={status}
+                    required
+                  >
+                    <option value="" disabled hidden>
+                      Please select
+                    </option>
+
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Assignee and project name */}
+              <AllocationFields
+                assignee={assignee}
+                projectName={projectName}
+                onChangeHandler={onChangeHandler}
+              />
+
+              {/* Buttons */}
+              <div className="flex flex-col md:flex-row md:justify-end gap-4">
+                <button
+                  type="submit"
+                  className={`text-white rounded-lg py-2 px-4 active:shadow-md ${isLoading ? "bg-blue-300 cursor-not-allowed" : "hover:bg-blue-600 cursor-pointer bg-blue-500"}`}
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Creating task..." : "Create Task"}
+                </button>
+
+                {!isLoading && (
+                  <button
+                    type="reset"
+                    className="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600 cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                )}
+              </div>
+            </form>
+          ) : (
+            <div className="flex flex-col gap-2 items-center">
+              <p className="font-semibold">Please create a project first</p>
+              <Link
+                href="/dashboard/projects"
+                className="text-blue-400 hover:underline text-xs"
               >
-                Cancel
-              </button>
-            )}
-          </div>
-        </form>
-      </section>
+                Go to Projects
+              </Link>
+            </div>
+          )}
+        </section>
+      )}
+      {isLoading && <Spinner />}
     </div>
   );
 };
