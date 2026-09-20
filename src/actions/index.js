@@ -117,3 +117,26 @@ export async function updateTaskStatus(id, newStatus) {
     return { error };
   }
 }
+
+export async function updateUser(data) {
+  const { name, email } = data;
+  try {
+    const response = await User.findOneAndUpdate(
+      { email: email },
+      { name: name },
+      { returnDocument: "after", runValidators: true },
+    )
+      .select("-password")
+      .lean();
+
+    if (!response) {
+      return { success: false, error: "Error updating user details" };
+    }
+
+    revalidatePath("/dashboard/settings");
+    return {
+      success: true,
+      message: "Profile updated successfully",
+    };
+  } catch (error) {}
+}
