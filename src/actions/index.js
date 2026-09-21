@@ -1,7 +1,8 @@
 "use server";
 
-import { signIn, signOut, auth } from "@/auth";
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import { signIn, signOut, auth } from "@/auth";
 import { User, Project, Task } from "@/model/user-model";
 import { revalidatePath } from "next/cache";
 
@@ -138,5 +139,78 @@ export async function updateUser(data) {
       success: true,
       message: "Profile updated successfully",
     };
+  } catch (error) {}
+}
+
+export async function deleteUser(email) {
+  try {
+    const response = await User.deleteOne({ email: email });
+    return response;
+  } catch (error) {
+    return { error };
+  }
+}
+
+export async function deleteAllProjects(email) {
+  try {
+    const response = await Project.deleteMany({ email: email });
+    return response;
+  } catch (error) {
+    return { error };
+  }
+}
+
+export async function deleteAllTasks(email) {
+  try {
+    const response = await Task.deleteMany({ email: email });
+    return response;
+  } catch (error) {
+    return { error };
+  }
+}
+
+export async function getUser(email) {
+  try {
+    const user = await User.findOne({ email: email }).lean();
+    return { ...user, _id: user._id.toString() };
+  } catch (error) {
+    return { error };
+  }
+}
+
+export async function changePassword(email, oldPassword, newPassword) {
+  try {
+    //find current user
+    const user = await User.findOne({ email: email }).lean();
+
+    //check if user exits
+    if (!user) {
+      return { success: false, error: "User not found" };
+    }
+
+    //compare old passwords
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+
+    if (!isMatch) {
+      return {
+        success: false,
+        error: "Incorrect password, check and try again!",
+      };
+    }
+
+    //hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 5);
+
+    //update user password
+    const res = await User.findOneAndUpdate(
+      { email: email },
+      { password: hashedPassword },
+    ).lean();
+
+    if (res) {
+      return { success: true, message: "Password changed successfully" };
+    }
+
+    console.log(res);
   } catch (error) {}
 }
