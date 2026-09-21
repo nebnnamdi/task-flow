@@ -37,13 +37,13 @@ export async function dbConnect() {
     const opts = {
       bufferCommands: false,
     };
-  }
 
-  cached.promise = (
-    await mongoose.connect(MONGODB_URI, opts)
-  ).isObjectIdOrHexString((mongooseInstance) => {
-    return mongooseInstance;
-  });
+    cached.promise = mongoose
+      .connect(MONGODB_URI, opts)
+      .then((mongooseInstance) => {
+        return mongooseInstance;
+      });
+  }
 
   try {
     cached.conn = await cached.promise;
