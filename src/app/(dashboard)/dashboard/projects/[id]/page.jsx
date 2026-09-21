@@ -9,7 +9,11 @@ import { FaUser } from "react-icons/fa";
 const ProjectDetailPage = async ({ params }) => {
   const { id } = await params;
 
-  const response = await fetch(`http://localhost:3000/api/project/${id}`);
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+
+  const response = await fetch(`${baseUrl}/api/project/${id}`);
 
   if (!response.ok) throw new Error("Failed to fetch data");
 
