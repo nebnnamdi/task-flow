@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { User } from "@/model/user-model";
 import bcrypt from "bcrypt";
-import { NextResponse } from "next/server";
+import { dbConnect } from "./lib/mongo";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: {
@@ -12,6 +12,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     Credentials({
       async authorize(credentials) {
         if (!credentials) return null;
+
+        //connect to db
+        await dbConnect();
 
         const { email, password } = credentials;
 
