@@ -3,6 +3,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import { signIn, signOut, auth } from "@/auth";
+import { dbConnect } from "@/lib/mongo";
 import { User, Project, Task } from "@/model/user-model";
 import { revalidatePath } from "next/cache";
 
@@ -56,6 +57,8 @@ export async function getSession() {
 }
 
 export async function getAllUsers() {
+  await dbConnect();
+
   const users = await User.find({}).select("-password").lean();
 
   return users.map((user) => ({
@@ -65,6 +68,8 @@ export async function getAllUsers() {
 }
 
 export async function getAllProjects() {
+  await dbConnect();
+
   try {
     const projects = await Project.find({}).sort({ _id: -1 }).lean();
     return projects.map((project) => ({
@@ -77,6 +82,8 @@ export async function getAllProjects() {
 }
 
 export async function deleteProject(id) {
+  await dbConnect();
+
   try {
     await Project.deleteOne({ _id: id });
 
@@ -88,6 +95,8 @@ export async function deleteProject(id) {
 }
 
 export async function getAllTasks() {
+  await dbConnect();
+
   try {
     const tasks = await Task.find({}).sort({ _id: -1 }).lean();
 
@@ -120,6 +129,8 @@ export async function updateTaskStatus(id, newStatus) {
 }
 
 export async function updateUser(data) {
+  await dbConnect();
+
   const { name, email } = data;
   try {
     const response = await User.findOneAndUpdate(
@@ -143,6 +154,8 @@ export async function updateUser(data) {
 }
 
 export async function deleteUser(email) {
+  await dbConnect();
+
   try {
     const response = await User.deleteOne({ email: email });
     return response;
@@ -152,6 +165,8 @@ export async function deleteUser(email) {
 }
 
 export async function deleteAllProjects(email) {
+  await dbConnect();
+
   try {
     const response = await Project.deleteMany({ email: email });
     return response;
@@ -161,6 +176,8 @@ export async function deleteAllProjects(email) {
 }
 
 export async function deleteAllTasks(email) {
+  await dbConnect();
+
   try {
     const response = await Task.deleteMany({ email: email });
     return response;
@@ -170,6 +187,8 @@ export async function deleteAllTasks(email) {
 }
 
 export async function getUser(email) {
+  await dbConnect();
+
   try {
     const user = await User.findOne({ email: email }).lean();
     return { ...user, _id: user._id.toString() };
@@ -179,6 +198,8 @@ export async function getUser(email) {
 }
 
 export async function changePassword(email, oldPassword, newPassword) {
+  await dbConnect();
+
   try {
     //find current user
     const user = await User.findOne({ email: email }).lean();
