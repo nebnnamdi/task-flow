@@ -124,7 +124,7 @@ const NewProject = () => {
   ) : (
     <form onSubmit={submitHandler} onReset={resetHandler}>
       {/* containing title, type and dates */}
-      <div className="md:flex md:overflow-x-scroll md:overflow-y-hidden lg:overflow-hidden gap-4 w-full p-2">
+      <div className="md:flex md:overflow-x-scroll md:overflow-y-hidden lg:overflow-hidden text-sm gap-2 w-full p-2">
         <div className="flex flex-col md:w-1/3">
           <label htmlFor="title" className="my-2 font-semibold">
             Title
@@ -155,7 +155,7 @@ const NewProject = () => {
           />
         </div>
 
-        <div className="flex gap-4 md:w-1/3">
+        <div className="flex gap-2 md:w-1/3">
           <div className="flex flex-col w-1/2">
             <label htmlFor="start" className="my-2 font-semibold">
               Start
@@ -187,7 +187,7 @@ const NewProject = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col p-2">
+      <div className="flex flex-col p-2 text-sm">
         <label htmlFor="description" className="my-2 font-semibold">
           Description
         </label>
@@ -201,13 +201,13 @@ const NewProject = () => {
           className="border rounded-lg p-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
           required
         ></textarea>
-        <div className="text-xs">
+        <div className="text-xs my-2">
           <span className="font-semibold text-purple-500">Created by: </span>
           {createdBy}
         </div>
       </div>
 
-      <div className="md:flex w-full justify-between my-4 p-2">
+      <div className="md:flex w-full justify-between my-4 p-2 text-sm">
         <div>
           <span className="my-2 font-semibold">Members</span>
           <div className="flex gap-4">

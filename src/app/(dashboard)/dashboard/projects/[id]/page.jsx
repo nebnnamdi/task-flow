@@ -11,8 +11,6 @@ const ProjectDetailPage = async ({ params }) => {
 
   const res = await getProject(id);
 
-  console.log(res);
-
   // const baseUrl = process.env.VERCEL_URL
   //   ? `https://${process.env.VERCEL_URL}`
   //   : process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
