@@ -9,7 +9,7 @@ import { revalidatePath } from "next/cache";
 
 export async function login(formData) {
   const user = {
-    email: formData.get("email"),
+    email: formData.get("email").toLowerCase(),
     password: formData.get("password"),
   };
 

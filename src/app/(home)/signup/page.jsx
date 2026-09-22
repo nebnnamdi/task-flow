@@ -57,7 +57,7 @@ const SignUp = () => {
 
     const regData = {
       name,
-      email,
+      email: email.toLowerCase(),
       password,
     };
 
