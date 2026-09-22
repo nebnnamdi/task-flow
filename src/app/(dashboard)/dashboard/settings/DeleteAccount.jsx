@@ -66,7 +66,7 @@ const DeleteAccount = () => {
           <FaRegTrashAlt className="text-red-500" />
         </span>
         <span>
-          <p className="text-sm font-semibold text-red-500">Dancer Zone</p>
+          <p className="text-sm font-semibold text-red-500">Danger Zone</p>
           <p className="text-xs text-gray-500">Manage your account security</p>
         </span>
       </div>
