@@ -14,6 +14,8 @@ export async function login(formData) {
   };
 
   try {
+    await dbConnect();
+
     const response = await signIn("credentials", {
       email: user.email,
       password: user.password,
@@ -78,6 +80,18 @@ export async function getAllProjects() {
     }));
   } catch (error) {
     console.log({ error });
+  }
+}
+
+export async function getProject(id) {
+  await dbConnect();
+
+  try {
+    const response = await Project.findOne({ _id: id }).lean();
+
+    return { ...response, _id: response._id.toString() };
+  } catch (error) {
+    return { error };
   }
 }
 

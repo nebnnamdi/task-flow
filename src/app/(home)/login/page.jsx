@@ -10,9 +10,12 @@ import { useState } from "react";
 const LoginPage = () => {
   const router = useRouter();
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setError(null);
+    setLoading(true);
 
     const formData = new FormData(e.currentTarget);
 
@@ -21,10 +24,14 @@ const LoginPage = () => {
 
       if (response?.error) {
         setError(response.error);
+        setLoading(false);
+
         return;
       }
 
       setError(null);
+      setLoading(false);
+
       router.push("/dashboard");
     } catch (error) {
       setError(error);
@@ -76,7 +83,7 @@ const LoginPage = () => {
             />
           </div>
 
-          <SubmitButton name="Login" />
+          <SubmitButton name="Login" loading={loading} />
         </form>
         <p className="text-xs pt-4">
           Don't have an account? &nbsp;

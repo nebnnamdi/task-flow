@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { deleteProject } from "@/actions";
+import { getProject, deleteProject } from "@/actions";
 import DeleteButton from "./DeleteButton";
 import { FaBriefcase } from "react-icons/fa";
 import { FaRegCalendarAlt } from "react-icons/fa";
@@ -9,15 +9,19 @@ import { FaUser } from "react-icons/fa";
 const ProjectDetailPage = async ({ params }) => {
   const { id } = await params;
 
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const res = await getProject(id);
 
-  const response = await fetch(`${baseUrl}/api/project/${id}`);
+  console.log(res);
 
-  if (!response.ok) throw new Error("Failed to fetch data");
+  // const baseUrl = process.env.VERCEL_URL
+  //   ? `https://${process.env.VERCEL_URL}`
+  //   : process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
-  const data = await response.json();
+  // const response = await fetch(`${baseUrl}/api/project/${id}`);
+
+  if (!res) throw new Error("Failed to fetch data");
+
+  // const data = await response.json();
 
   return (
     <div className="flex flex-col">
@@ -30,7 +34,7 @@ const ProjectDetailPage = async ({ params }) => {
 
       <div className="flex justify-between mb-4">
         <div>
-          <p className="text-2xl font-bold">{data.title}</p>
+          <p className="text-2xl font-bold">{res.title}</p>
         </div>
 
         <div className="flex gap-4">
@@ -49,7 +53,7 @@ const ProjectDetailPage = async ({ params }) => {
 
             <div className="flex flex-col justify-center text-xs gap-1">
               <p>Project Type</p>
-              <p className="font-semibold">{data.type}</p>
+              <p className="font-semibold">{res.type}</p>
             </div>
           </div>
 
@@ -61,7 +65,7 @@ const ProjectDetailPage = async ({ params }) => {
 
             <div className="flex flex-col justify-center text-xs gap-1">
               <p>Start Date</p>
-              <p className="font-semibold">{data.startDate}</p>
+              <p className="font-semibold">{res.startDate}</p>
             </div>
           </div>
 
@@ -73,7 +77,7 @@ const ProjectDetailPage = async ({ params }) => {
 
             <div className="flex flex-col justify-center text-xs gap-1">
               <p>End Date</p>
-              <p className="font-semibold">{data.endDate}</p>
+              <p className="font-semibold">{res.endDate}</p>
             </div>
           </div>
 
@@ -85,7 +89,7 @@ const ProjectDetailPage = async ({ params }) => {
 
             <div className="flex flex-col justify-center text-xs gap-1">
               <p>Created By</p>
-              <p className="font-semibold">{data.createdBy}</p>
+              <p className="font-semibold">{res.createdBy}</p>
             </div>
           </div>
         </div>
@@ -97,7 +101,7 @@ const ProjectDetailPage = async ({ params }) => {
             {/* description */}
             <div className="flex flex-col gap-2 min-h-50 bg-white p-4 rounded-lg shadow">
               <p className="font-semibold">Description</p>
-              <p>{data.description}</p>
+              <p>{res.description}</p>
             </div>
 
             {/* details */}
@@ -107,22 +111,22 @@ const ProjectDetailPage = async ({ params }) => {
                 <tbody className="divide-y divide-gray-200 [&_td]:py-1.5">
                   <tr>
                     <td>Title</td>
-                    <td>{data.title}</td>
+                    <td>{res.title}</td>
                   </tr>
 
                   <tr>
                     <td>Type</td>
-                    <td>{data.type}</td>
+                    <td>{res.type}</td>
                   </tr>
 
                   <tr>
                     <td>Start Date</td>
-                    <td>{data.startDate}</td>
+                    <td>{res.startDate}</td>
                   </tr>
 
                   <tr>
                     <td>End Date</td>
-                    <td>{data.endDate}</td>
+                    <td>{res.endDate}</td>
                   </tr>
                 </tbody>
               </table>
@@ -137,7 +141,7 @@ const ProjectDetailPage = async ({ params }) => {
               <div className="flex gap-4">
                 <FaUser className="rounded-full bg-blue-100 text-blue-700 size-14 p-2" />
                 <div className="flex flex-col justify-center">
-                  <p className="font-semibold">{data.createdBy}</p>
+                  <p className="font-semibold">{res.createdBy}</p>
                 </div>
               </div>
             </div>
@@ -148,7 +152,7 @@ const ProjectDetailPage = async ({ params }) => {
 
               {/* each member */}
               <div className="flex flex-col gap-2">
-                {data.members.map((member) => (
+                {res.members.map((member) => (
                   <div
                     key={member}
                     className="flex gap-2 border-b border-gray-200 last:border-b-0"

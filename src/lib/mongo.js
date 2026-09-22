@@ -49,7 +49,7 @@ export async function dbConnect() {
     cached.conn = await cached.promise;
   } catch (error) {
     cached.promise = null;
-    throw new Error("Error connecting to DB");
+    return { error };
   }
 
   return cached.conn;
