@@ -4,6 +4,7 @@ import Link from "next/link";
 import SubmitButton from "@/components/ui/SubmitButton";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const SignUp = () => {
   //form states
@@ -37,6 +38,7 @@ const SignUp = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setErrors((prevState) => ({ ...prevState, error: "", isError: false }));
     const localErrors = {};
 
     if (formData.password !== formData.confirmPassword) {
@@ -78,6 +80,7 @@ const SignUp = () => {
           isError: true,
         }));
       } else {
+        toast.success("Registration successful!");
         router.push("/");
       }
     } catch (error) {

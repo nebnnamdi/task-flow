@@ -1,11 +1,12 @@
 "use client";
 
-import SubmitButton from "@/components/ui/SubmitButton";
 import Image from "next/image";
 import Link from "next/link";
-import { login } from "@/actions";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { login } from "@/actions";
+import { toast } from "sonner";
+import SubmitButton from "@/components/ui/SubmitButton";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -32,6 +33,7 @@ const LoginPage = () => {
       setError(null);
       setLoading(false);
 
+      toast.success("Login successful!");
       router.push("/dashboard");
     } catch (error) {
       setError(error);
