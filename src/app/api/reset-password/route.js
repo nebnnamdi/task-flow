@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 import bcrypt from "bcrypt";
 import { User } from "@/model/user-model";
+import { dbConnect } from "@/lib/mongo";
 
 export async function POST(req) {
   const data = await req.json();
@@ -9,6 +10,9 @@ export async function POST(req) {
   const { password, token } = data;
 
   try {
+    //connect to db
+    await dbConnect();
+
     //hash incoming token
     const hashedResetToken = crypto
       .createHash("sha256")
