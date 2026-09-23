@@ -1,22 +1,37 @@
 import mongoose, { Schema } from "mongoose";
 
-const userSchema = new Schema({
-  name: {
-    required: true,
-    type: String,
-  },
+const userSchema = new Schema(
+  {
+    name: {
+      required: true,
+      type: String,
+    },
 
-  email: {
-    required: true,
-    type: String,
-    unique: true,
-  },
+    email: {
+      required: true,
+      type: String,
+      unique: true,
+    },
 
-  password: {
-    required: true,
-    type: String,
+    password: {
+      required: true,
+      type: String,
+    },
+
+    resetToken: {
+      type: String,
+      default: null,
+    },
+
+    resetTokenExpiry: {
+      type: Date,
+      default: null,
+    },
   },
-});
+  {
+    timestamps: true,
+  },
+);
 
 const projectSchema = new Schema({
   title: {
