@@ -32,12 +32,12 @@ const ForgotPasswordForm = () => {
         body: JSON.stringify({ email }),
       });
 
-      if (!response.ok) {
-        setError({ status: true, message: response.message });
-        return;
-      }
-
       const data = await response.json();
+
+      if (!data.ok) {
+        setError({ status: true, message: data.message });
+        setLoading(false);
+      }
 
       router.push(`${data.resetUrl}`);
 

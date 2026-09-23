@@ -17,7 +17,7 @@ export async function POST(req) {
 
     if (!user) {
       return NextResponse.json(
-        { userExists: false, message: "Invalid email" },
+        { ok: false, message: "Invalid email!" },
         { status: 400 },
       );
     }
@@ -43,9 +43,16 @@ export async function POST(req) {
       },
     ).lean();
 
-    const resetUrl = `/reset-password/${rawResetToken}`;
+    if (!res) {
+      return NextResponse.json(
+        { ok: false, message: "Something went wrong!" },
+        { status: 500 },
+      );
+    } else {
+      const resetUrl = `/reset-password/${rawResetToken}`;
 
-    return NextResponse.json({ userExists: true, resetUrl }, { status: 200 });
+      return NextResponse.json({ userExists: true, resetUrl }, { status: 200 });
+    }
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }

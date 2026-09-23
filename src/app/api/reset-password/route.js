@@ -10,6 +10,7 @@ export async function POST(req) {
   const { password, token } = data;
 
   try {
+    //connect to db
     await dbConnect();
 
     //hash incoming token
