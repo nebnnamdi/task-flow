@@ -29,11 +29,13 @@ export const POST = async (req) => {
       return response;
     }
   } catch (error) {
-    console.error(error);
+    console.error({ error });
   }
 
-  return new NextResponse("Registration successful", {
-    status: 201,
-    statusText: "Registration successful",
-  });
+  return NextResponse.json(
+    { ok: true, message: "Registration successful!" },
+    {
+      status: 201,
+    },
+  );
 };
