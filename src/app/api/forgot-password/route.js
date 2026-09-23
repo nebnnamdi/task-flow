@@ -51,7 +51,7 @@ export async function POST(req) {
     } else {
       const resetUrl = `/reset-password/${rawResetToken}`;
 
-      return NextResponse.json({ userExists: true, resetUrl }, { status: 200 });
+      return NextResponse.json({ ok: true, resetUrl }, { status: 200 });
     }
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
