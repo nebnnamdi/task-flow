@@ -17,7 +17,7 @@ export const POST = async (req) => {
   //create payload
   const newUser = {
     name,
-    email,
+    email: email.toLowerCase(),
     password: hashedPassword,
   };
 
