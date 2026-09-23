@@ -86,6 +86,15 @@ const LoginPage = () => {
           <SubmitButton name="Login" loading={loading} />
         </form>
         <p className="text-xs pt-4">
+          Forgot password? &nbsp;
+          <Link
+            href="/forgot-password"
+            className="text-blue-500 hover:underline"
+          >
+            Forgot password
+          </Link>
+        </p>
+        <p className="text-xs pt-4">
           Don't have an account? &nbsp;
           <Link href="/signup" className="text-blue-500 hover:underline">
             Sign Up
