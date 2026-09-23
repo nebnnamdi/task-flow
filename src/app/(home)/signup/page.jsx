@@ -73,12 +73,14 @@ const SignUp = () => {
         body: JSON.stringify(regData),
       });
 
-      if (response.status !== 201) {
-        setErrors((prevState) => ({
-          ...prevState,
-          error: response.statusText,
-          isError: true,
-        }));
+      if (!response.ok) {
+        setErrors((prevState) => {
+          return {
+            ...prevState,
+            error: response.statusText,
+            isError: true,
+          };
+        });
       } else {
         toast.success("Registration successful!");
         router.push("/");
