@@ -73,11 +73,13 @@ const SignUp = () => {
         body: JSON.stringify(regData),
       });
 
-      if (!response.ok) {
+      const res = await response.json();
+
+      if (!res.ok) {
         setErrors((prevState) => {
           return {
             ...prevState,
-            error: response.statusText,
+            error: res.message,
             isError: true,
           };
         });

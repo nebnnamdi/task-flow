@@ -7,10 +7,12 @@ export const createUser = async (user) => {
   } catch (error) {
     //check for duplicate user
     if (error.code === 11000) {
-      return new NextResponse("User already exists", {
-        status: 400,
-        statusText: "User already exists!",
-      });
+      return NextResponse.json(
+        { ok: false, message: "User already exists!" },
+        {
+          status: 400,
+        },
+      );
     }
   }
 };

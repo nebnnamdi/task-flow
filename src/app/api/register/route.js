@@ -25,8 +25,15 @@ export const POST = async (req) => {
   try {
     const response = await createUser(newUser);
 
-    if (response.status !== 201) {
-      return response;
+    const res = await response.json();
+
+    console.log(res);
+
+    if (!res.ok) {
+      return NextResponse.json(
+        { ok: false, message: res.message },
+        { status: 400 },
+      );
     }
   } catch (error) {
     console.error({ error });
