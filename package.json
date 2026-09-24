@@ -29,5 +29,6 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.12",
     "tailwindcss": "^4"
-  }
+  },
+  "description": "A responsive full-stack task and project management application built with Next.js, React, MongoDB, and NextAuth."
 }
