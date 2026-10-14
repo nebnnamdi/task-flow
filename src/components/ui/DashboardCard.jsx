@@ -2,25 +2,33 @@ import Link from "next/link";
 import { FaProjectDiagram } from "react-icons/fa";
 import { BiTask } from "react-icons/bi";
 import { IoMdSettings } from "react-icons/io";
+import { FiArrowUpRight } from "react-icons/fi";
 
-const DashboardCard = ({ name, icon, href }) => {
+const cardIcons = {
+  FaProjectDiagram: FaProjectDiagram,
+  BiTask,
+  IoMdSettings,
+};
+
+const DashboardCard = ({ name, icon, href, description }) => {
+  const Icon = cardIcons[icon];
+
   return (
     <Link
       href={href}
-      className="flex flex-col gap-4 justify-center items-center bg-white w-full md:w-1/3 shadow-lg border rounded-2xl py-4 border-gray-200 transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl active:translate-y-0 active:shadow-md cursor-pointer"
+      className="group relative flex min-h-44 flex-col justify-between overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
     >
-      <div className="">
-        {icon === "FaProjectDiagram" ? (
-          <FaProjectDiagram size={50} />
-        ) : icon === "BiTask" ? (
-          <BiTask size={50} />
-        ) : (
-          <IoMdSettings size={50} />
-        )}
+      <div className="flex items-start justify-between">
+        <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600 transition-colors group-hover:bg-blue-600 group-hover:text-white">
+          <Icon size={21} aria-hidden="true" />
+        </span>
+        <span className="rounded-lg p-2 text-slate-300 transition-colors group-hover:bg-blue-50 group-hover:text-blue-600">
+          <FiArrowUpRight size={18} aria-hidden="true" />
+        </span>
       </div>
-
-      <div className="r">
-        <p className="text-base font-bold pb-4">{name}</p>
+      <div>
+        <h2 className="text-base font-semibold text-slate-950">{name}</h2>
+        <p className="mt-1 text-sm leading-5 text-slate-500">{description}</p>
       </div>
     </Link>
   );

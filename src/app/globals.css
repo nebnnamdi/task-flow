@@ -144,3 +144,18 @@
     font-family: var(--font-geist-mono), monospace;
   }
 }
+
+@layer base {
+  ::selection {
+    background: oklch(0.93 0.04 250);
+    color: oklch(0.25 0.08 255);
+  }
+
+  button,
+  a,
+  input,
+  textarea,
+  select {
+    -webkit-tap-highlight-color: transparent;
+  }
+}

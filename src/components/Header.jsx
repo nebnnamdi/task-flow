@@ -6,36 +6,50 @@ import { CiLogout } from "react-icons/ci";
 
 const Header = async () => {
   const session = await auth();
+  const name =
+    session?.user?.name || session?.user?.email?.split("@")[0] || "User";
+  const initial = name.charAt(0).toUpperCase();
 
   return (
-    <header className="fixed top-0 left-0 right-0 h-16 bg-white shadow flex items-center justify-between px-6 z-50">
-      <Link
-        href="/"
-        className="flex items-center justify-center gap-2 cursor-pointer"
-      >
-        <Image
-          src="/images/logo.png"
-          width="25"
-          height="25"
-          alt="logo"
-          loading="eager"
-        />
+    <header className="fixed left-0 right-0 top-0 z-50 h-16 border-b border-slate-200 bg-white/95 backdrop-blur">
+      <div className="mx-auto flex h-full max-w-[1600px] items-center justify-between px-4 sm:px-6">
+        <Link href="/dashboard" className="flex items-center gap-2.5">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 shadow-sm">
+            <Image
+              src="/images/logo.png"
+              width="22"
+              height="22"
+              alt="Task-Flow logo"
+              loading="eager"
+              className=""
+            />
+          </span>
+          <span className="text-base font-bold tracking-tight text-slate-950">
+            Task-Flow
+          </span>
+        </Link>
 
-        <span className="hidden md:flex md:text-xs">Task-Flow</span>
-      </Link>
-
-      <form
-        action={logout}
-        className="flex flex-col md:flex-row items-end md:items-center md:justify-center gap-1 md:gap-4 "
-      >
-        <p className="text-xs">You are logged in as {session?.user?.email}</p>
-        <button
-          type="submit"
-          className="bg-black text-white py-1 px-4 flex justify-end gap-1 cursor-pointer text-xs w-25"
-        >
-          Log out <CiLogout color="#fff" size={20} />
-        </button>
-      </form>
+        <div className="flex items-center gap-3">
+          <div className="hidden text-right sm:block">
+            <p className="text-xs font-medium text-slate-900">{name}</p>
+            <p className="max-w-48 truncate text-[11px] text-slate-400">
+              {session?.user?.email}
+            </p>
+          </div>
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-700">
+            {initial}
+          </div>
+          <form action={logout}>
+            <button
+              type="submit"
+              className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-200 px-3 text-xs font-semibold text-slate-600 transition-colors hover:border-slate-300 hover:bg-slate-50 hover:text-slate-950"
+            >
+              <CiLogout size={17} aria-hidden="true" />
+              <span className="hidden sm:inline">Log out</span>
+            </button>
+          </form>
+        </div>
+      </div>
     </header>
   );
 };
